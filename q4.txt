@@ -1,0 +1,79 @@
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
+
+function GradeCalculator() {
+  const [m1, setM1] = useState("");
+  const [m2, setM2] = useState("");
+  const [m3, setM3] = useState("");
+  const [average, setAverage] = useState(0);
+  const [grade, setGrade] = useState("");
+
+  const container = {
+    width: "320px",
+    margin: "20px auto",
+    padding: "20px",
+    border: "1px solid #ccc",
+    borderRadius: "10px",
+    textAlign: "center",
+    fontFamily: "Arial",
+    backgroundColor: "#f4f4f4"
+  };
+
+  const inputStyle = {
+    width: "90%",
+    padding: "10px",
+    margin: "8px 0",
+    borderRadius: "5px",
+    border: "1px solid #ccc"
+  };
+
+  const buttonStyle = {
+    marginTop: "10px",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer"
+  };
+
+  const calculate = () => {
+    const avg = (Number(m1) + Number(m2) + Number(m3)) / 3;
+    setAverage(avg.toFixed(2));
+
+    if (avg >= 90) setGrade("A+");
+    else if (avg >= 75) setGrade("A");
+    else if (avg >= 60) setGrade("B");
+    else if (avg >= 50) setGrade("C");
+    else setGrade("Fail");
+  };
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <h3>Name: Ankur Anil Jadhav</h3>
+        <h4>Reg No: 24BDS0162</h4>
+      </div>
+
+      <div style={container}>
+        <h2>Grade Calculator</h2>
+
+        <input type="number" value={m1} onChange={(e) => setM1(e.target.value)} placeholder="Subject 1" style={inputStyle} />
+        <input type="number" value={m2} onChange={(e) => setM2(e.target.value)} placeholder="Subject 2" style={inputStyle} />
+        <input type="number" value={m3} onChange={(e) => setM3(e.target.value)} placeholder="Subject 3" style={inputStyle} />
+
+        <button style={buttonStyle} onClick={calculate}>Calculate</button>
+
+        <h3>Average: {average}</h3>
+        <h3>Grade: {grade}</h3>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return <GradeCalculator />;
+}
+
+export default App;
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);

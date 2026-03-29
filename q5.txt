@@ -1,0 +1,43 @@
+import React, { useState } from "react";
+
+function App() {
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  const handleChange = (e) => {
+    setTask(e.target.value);
+  };
+
+  const addTask = () => {
+    if (task.trim() === "") return;
+    setTasks([...tasks, task]);
+    setTask("");
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h3>Ankur Anil Jadhav</h3>
+      <p>Reg No: 24BDS0162</p>
+
+      <h2>Todo List</h2>
+
+      <input
+        type="text"
+        value={task}
+        onChange={handleChange}
+        placeholder="Enter a task"
+      />
+
+      <button onClick={addTask}>Add</button>
+
+      <ul>
+        {tasks.map((t, index) => (
+          <li key={index}>{t}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+

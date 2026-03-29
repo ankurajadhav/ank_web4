@@ -1,0 +1,30 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+function Welcome(props) {
+  const style = {
+    color: "#2c3e50",
+    backgroundColor: "#ecf0f1",
+    padding: "20px",
+    borderRadius: "10px",
+    textAlign: "center",
+    fontFamily: "Arial"
+  };
+
+  return (
+    <div style={style}>
+      <h1>Hello, {props.name}!</h1>
+      <h2>Welcome to {props.city}</h2>
+      <p>
+        This is a simple React application demonstrating functional components,
+        props, JSX, and inline styling.
+      </p>
+    </div>
+  );
+}
+
+function App() {
+  return <Welcome name="Ankur" city="Katpadi" />;
+}
+
+export default App;

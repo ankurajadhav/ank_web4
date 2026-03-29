@@ -1,0 +1,112 @@
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
+
+
+async function fetchBooks(query) {
+  const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+  const data = await res.json();
+
+  if (!data.items) return [];
+
+  return data.items.map((item) => {
+    const info = item.volumeInfo;
+    return {
+      id: item.id,
+      title: info.title,
+      author: info.authors ? info.authors.join(", ") : "Unknown",
+      image: info.imageLinks ? info.imageLinks.thumbnail : "",
+      publisher: info.publisher || "N/A",
+      year: info.publishedDate ? info.publishedDate.substring(0, 4) : "N/A"
+    };
+  });
+}
+
+
+function Header() {
+  return <h1 style={{ textAlign: "center" }}>Book Explorer</h1>;
+}
+
+
+function Search({ onSearch }) {
+  const [query, setQuery] = useState("");
+
+  return (
+    <div style={{ textAlign: "center", marginBottom: "20px" }}>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search books..."
+      />
+      <button onClick={() => onSearch(query)}>Search</button>
+    </div>
+  );
+}
+
+
+function BookCard({ book }) {
+  const cardStyle = {
+    border: "1px solid #ccc",
+    borderRadius: "10px",
+    padding: "10px",
+    textAlign: "center",
+    width: "180px",
+    backgroundColor: "#f9f9f9"
+  };
+
+  return (
+    <div style={cardStyle}>
+      {book.image && <img src={book.image} alt={book.title} />}
+      <h4>{book.title}</h4>
+      <p>{book.author}</p>
+      <p>{book.publisher}</p>
+      <p>{book.year}</p>
+    </div>
+  );
+}
+
+
+function BookList({ books }) {
+  const grid = {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "15px",
+    justifyContent: "center"
+  };
+
+  return (
+    <div style={grid}>
+      {books.map((b) => (
+        <BookCard key={b.id} book={b} />
+      ))}
+    </div>
+  );
+}
+
+
+function App() {
+  const [books, setBooks] = useState([]);
+
+  const handleSearch = async (query) => {
+    const result = await fetchBooks(query);
+    setBooks(result);
+  };
+
+  return (
+    <div style={{ fontFamily: "Arial", marginTop: "20px" }}>
+      <div style={{ textAlign: "center" }}>
+        <h3>Name: Ankur Anil Jadhav</h3>
+        <h4>Reg No: 24BDS0162</h4>
+      </div>
+
+      <Header />
+      <Search onSearch={handleSearch} />
+      <BookList books={books} />
+    </div>
+  );
+}
+
+export default App;
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
